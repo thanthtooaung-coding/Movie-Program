@@ -10,7 +10,7 @@ public interface IMovieValidator {
     boolean isValidTitle(String title);
     boolean isValidReleaseDate(String releaseDate);
     boolean isValidRevenue(long revenue);
-    boolean isValidRuntime(double runtime);
+    boolean isValidRuntime(int runtime);
     boolean isValidCompanie(String companie);
     boolean isValidGenre(String genre);
     boolean isValidProdCountry(String prodCountry);

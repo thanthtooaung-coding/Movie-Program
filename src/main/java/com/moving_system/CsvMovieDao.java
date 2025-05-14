@@ -25,8 +25,6 @@ public class CsvMovieDao implements IMovieDao {
     private void loadFromFile() {
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] nextLine;
-            // Skip header line
-            reader.readNext();
             
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine.length == 9) {
@@ -34,7 +32,7 @@ public class CsvMovieDao implements IMovieDao {
                         int id = Integer.parseInt(nextLine[0].trim());
                         String releaseDate = nextLine[1].trim();
                         long revenue = Long.parseLong(nextLine[2].trim());
-                        double runtime = Double.parseDouble(nextLine[3].trim());
+                        int runtime = Integer.parseInt(nextLine[3].trim());
                         String title = nextLine[4].trim();
                         double voteAverage = Double.parseDouble(nextLine[5].trim());
                         String companie = nextLine[6].trim();
@@ -72,7 +70,7 @@ public class CsvMovieDao implements IMovieDao {
     @Override
     public boolean addMovie(Movie movie) {
         if (getMovieById(movie.getId()) != null) {
-            return false; // Movie with this ID already exists
+            return false;
         }
         movies.add(movie);
         return true;
@@ -96,26 +94,27 @@ public class CsvMovieDao implements IMovieDao {
 
     @Override
     public void saveToFile() {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath))) {
-            // Write header
-            String[] header = { "id", "title", "release_date", "revenue", "runtime", 
-                               "companie", "genre", "prod_country", "vote_average" };
-            writer.writeNext(header);
-            
-            // Write data
+        try (CSVWriter writer = new CSVWriter(
+                new FileWriter(csvFilePath),
+                CSVWriter.DEFAULT_SEPARATOR,
+                CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.NO_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END
+        )) {
+
             for (Movie movie : movies) {
                 String[] data = {
                     String.valueOf(movie.getId()),
-                    movie.getTitle(),
                     movie.getReleaseDate(),
                     String.valueOf(movie.getRevenue()),
                     String.valueOf(movie.getRuntime()),
+                    movie.getTitle(),
+                    String.valueOf(movie.getVoteAverage()),
                     movie.getCompanie(),
                     movie.getGenre(),
                     movie.getProdCountry(),
-                    String.valueOf(movie.getVoteAverage())
                 };
-                writer.writeNext(data);
+                writer.writeNext(data, false);
             }
         } catch (IOException e) {
             System.err.println("Error writing to CSV file: " + e.getMessage());

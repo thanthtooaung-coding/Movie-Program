@@ -6,7 +6,7 @@ public class MainTest {
     
     @Test
     public void testMovieCreation() {
-        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120.5,
+        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120,
                               "Test Studio", "Action", "USA", 7.5);
         
         assertEquals(1, movie.getId());
@@ -22,7 +22,7 @@ public class MainTest {
     
     @Test
     public void testMovieToString() {
-        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120.5, 
+        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120,
                               "Test Studio", "Action", "USA", 7.5);
         
         String movieString = movie.toString();
@@ -39,10 +39,10 @@ public class MainTest {
     
     @Test
     public void testMovieToCSV() {
-        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120.5, 
+        Movie movie = new Movie(1, "Test Movie", "2023-01-01", 1000000, 120,
                               "Test Studio", "Action", "USA", 7.5);
         
         String csvString = movie.toCSV();
-        assertEquals("1,Test Movie,2023-01-01,1000000,120.5,Test Studio,Action,USA,7.5", csvString);
+        assertEquals("1,Test Movie,2023-01-01,1000000,120,Test Studio,Action,USA,7.5", csvString);
     }
 }

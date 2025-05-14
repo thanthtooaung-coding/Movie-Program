@@ -8,14 +8,14 @@ public class Movie {
     private String title;
     private String releaseDate;
     private long revenue;
-    private double runtime;
+    private int runtime;
     private String companie;
     private String genre;
     private String prodCountry;
     private double voteAverage;
 
     // Constructor
-    public Movie(int id, String title, String releaseDate, long revenue, double runtime, 
+    public Movie(int id, String title, String releaseDate, long revenue, int runtime,
                 String companie, String genre, String prodCountry, double voteAverage) {
         this.id = id;
         this.title = title;
@@ -61,11 +61,11 @@ public class Movie {
         this.revenue = revenue;
     }
 
-    public double getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(double runtime) {
+    public void setRuntime(int runtime) {
         this.runtime = runtime;
     }
 

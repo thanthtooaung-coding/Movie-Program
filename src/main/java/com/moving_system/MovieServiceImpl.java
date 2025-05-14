@@ -43,26 +43,24 @@ public class MovieServiceImpl implements MovieService {
             
             break;
         } while (true);
-        
-        // Get and validate other fields
-        String title = getValidInput("Title", s -> s, validator::isValidTitle);
-        String releaseDate = getValidInput("Release Date (YYYY-MM-DD)", s -> s, validator::isValidReleaseDate);
-        String revenueStr = getValidInput("Revenue", Long::parseLong, validator::isValidRevenue);
-        long revenue = Long.parseLong(revenueStr);
-        String runtimeStr = getValidInput("Runtime (minutes)", Double::parseDouble, validator::isValidRuntime);
-        double runtime = Double.parseDouble(runtimeStr);
-        String companie = getValidInput("Company", s -> s, validator::isValidCompanie);
-        String genre = getValidInput("Genre", s -> s, validator::isValidGenre);
-        String prodCountry = getValidInput("Production Country", s -> s, validator::isValidProdCountry);
-        String voteAvgStr = getValidInput("Vote Average (0-10)", Double::parseDouble, validator::isValidVoteAverage);
-        double voteAverage = Double.parseDouble(voteAvgStr);
 
-        // Create and add the movie
-        Movie movie = new Movie(id, title, releaseDate, revenue, runtime, companie, genre, prodCountry, voteAverage);
+        final String title = getValidInput("Title", s -> s, validator::isValidTitle);
+        final String releaseDate = getValidInput("Release Date (MM/dd/yyyy)", s -> s, validator::isValidReleaseDate);
+        final String revenueStr = getValidInput("Revenue", Long::parseLong, validator::isValidRevenue);
+        final long revenue = Long.parseLong(revenueStr);
+        final String runtimeStr = getValidInput("Runtime (minutes)", Integer::parseInt, validator::isValidRuntime);
+        final int runtime = Integer.parseInt(runtimeStr);
+        final String companie = getValidInput("Company", s -> s, validator::isValidCompanie);
+        final String genre = getValidInput("Genre", s -> s, validator::isValidGenre);
+        final String prodCountry = getValidInput("Production Country", s -> s, validator::isValidProdCountry);
+        final String voteAvgStr = getValidInput("Vote Average (0-10)", Double::parseDouble, validator::isValidVoteAverage);
+        final double voteAverage = Double.parseDouble(voteAvgStr);
+
+        final Movie movie = new Movie(id, title, releaseDate, revenue, runtime, companie, genre, prodCountry, voteAverage);
         
         if (movieDao.addMovie(movie)) {
             System.out.println("Movie added successfully!");
-            movieDao.saveToFile();
+            this.movieDao.saveToFile();
         } else {
             System.out.println("Failed to add movie. Please try again.");
         }
@@ -82,44 +80,42 @@ public class MovieServiceImpl implements MovieService {
         }
         
         System.out.println("Updating movie: " + existingMovie.getTitle());
-        
-        // Get and validate other fields
-        String title = getValidInput("Title [" + existingMovie.getTitle() + "]", 
+
+        final String title = getValidInput("Title [" + existingMovie.getTitle() + "]",
                         input -> input.isEmpty() ? existingMovie.getTitle() : input, 
                         input -> input.isEmpty() || validator.isValidTitle(input));
-        
-        String releaseDate = getValidInput("Release Date [" + existingMovie.getReleaseDate() + "]", 
+
+        final String releaseDate = getValidInput("Release Date [" + existingMovie.getReleaseDate() + "]",
                              input -> input.isEmpty() ? existingMovie.getReleaseDate() : input, 
                              input -> input.isEmpty() || validator.isValidReleaseDate(input));
-        
-        String revenueStr = getValidInput("Revenue [" + existingMovie.getRevenue() + "]", 
+
+        final String revenueStr = getValidInput("Revenue [" + existingMovie.getRevenue() + "]",
                            input -> input.isEmpty() ? String.valueOf(existingMovie.getRevenue()) : input, 
                            input -> input.isEmpty() || validator.isValidRevenue(Long.parseLong(input)));
-        long revenue = Long.parseLong(revenueStr);
-        
-        String runtimeStr = getValidInput("Runtime [" + existingMovie.getRuntime() + "]", 
+        final long revenue = Long.parseLong(revenueStr);
+
+        final String runtimeStr = getValidInput("Runtime [" + existingMovie.getRuntime() + "]",
                           input -> input.isEmpty() ? String.valueOf(existingMovie.getRuntime()) : input, 
-                          input -> input.isEmpty() || validator.isValidRuntime(Double.parseDouble(input)));
-        double runtime = Double.parseDouble(runtimeStr);
-        
-        String companie = getValidInput("Company [" + existingMovie.getCompanie() + "]", 
+                          input -> input.isEmpty() || validator.isValidRuntime(Integer.parseInt(input)));
+        final int runtime = Integer.parseInt(runtimeStr);
+
+        final String companie = getValidInput("Company [" + existingMovie.getCompanie() + "]",
                          input -> input.isEmpty() ? existingMovie.getCompanie() : input, 
                          input -> input.isEmpty() || validator.isValidCompanie(input));
-        
-        String genre = getValidInput("Genre [" + existingMovie.getGenre() + "]", 
+
+        final String genre = getValidInput("Genre [" + existingMovie.getGenre() + "]",
                       input -> input.isEmpty() ? existingMovie.getGenre() : input, 
                       input -> input.isEmpty() || validator.isValidGenre(input));
-        
-        String prodCountry = getValidInput("Production Country [" + existingMovie.getProdCountry() + "]", 
+
+        final String prodCountry = getValidInput("Production Country [" + existingMovie.getProdCountry() + "]",
                             input -> input.isEmpty() ? existingMovie.getProdCountry() : input, 
                             input -> input.isEmpty() || validator.isValidProdCountry(input));
-        
-        String voteAverageStr = getValidInput("Vote Average [" + existingMovie.getVoteAverage() + "]", 
+
+        final String voteAverageStr = getValidInput("Vote Average [" + existingMovie.getVoteAverage() + "]",
                               input -> input.isEmpty() ? String.valueOf(existingMovie.getVoteAverage()) : input, 
                               input -> input.isEmpty() || validator.isValidVoteAverage(Double.parseDouble(input)));
-        double voteAverage = Double.parseDouble(voteAverageStr);
-        
-        // Create updated movie
+        final double voteAverage = Double.parseDouble(voteAverageStr);
+
         Movie updatedMovie = new Movie(id, title, releaseDate, revenue, runtime, companie, genre, prodCountry, voteAverage);
         
         if (movieDao.updateMovie(updatedMovie)) {

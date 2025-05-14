@@ -12,8 +12,8 @@ public class Main {
 
     public Main() {
         this.scanner = new Scanner(System.in);
-        IMovieDao movieDao = new CsvMovieDao(CSV_FILE_PATH);
-        IMovieValidator movieValidator = new MovieValidator(movieDao);
+        final IMovieDao movieDao = new CsvMovieDao(CSV_FILE_PATH);
+        final IMovieValidator movieValidator = new MovieValidator(movieDao);
         this.movieServiceImpl = new MovieServiceImpl(movieDao, movieValidator);
     }
 

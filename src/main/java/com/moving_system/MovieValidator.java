@@ -1,5 +1,8 @@
 package com.moving_system;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -28,11 +31,18 @@ public class MovieValidator implements IMovieValidator {
         return title != null && !title.trim().isEmpty();
     }
 
-    @Override
-    public boolean isValidReleaseDate(String releaseDate) {
-        // Basic date format validation (YYYY-MM-DD)
-        String regex = "\\d{4}-\\d{2}-\\d{2}";
-        return releaseDate != null && Pattern.matches(regex, releaseDate);
+    public boolean isValidReleaseDate(String dateStr) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            return false;
+        }
+
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+        try {
+            LocalDate.parse(dateStr, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     @Override
@@ -41,7 +51,7 @@ public class MovieValidator implements IMovieValidator {
     }
 
     @Override
-    public boolean isValidRuntime(double runtime) {
+    public boolean isValidRuntime(int runtime) {
         return runtime > 0;
     }
 
