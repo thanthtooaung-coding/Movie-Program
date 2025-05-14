@@ -13,6 +13,8 @@ import java.util.List;
  * Implementation of IMovieDao that works with CSV files
  */
 public class CsvMovieDao implements IMovieDao {
+    private static CsvMovieDao instance;
+
     private final String csvFilePath;
     private final List<Movie> movies;
 
@@ -20,6 +22,14 @@ public class CsvMovieDao implements IMovieDao {
         this.csvFilePath = csvFilePath;
         this.movies = new ArrayList<>();
         loadFromFile();
+    }
+
+    // Singleton accessor
+    public static CsvMovieDao getInstance(String csvFilePath) {
+        if (instance == null) {
+            instance = new CsvMovieDao(csvFilePath);
+        }
+        return instance;
     }
 
     private void loadFromFile() {

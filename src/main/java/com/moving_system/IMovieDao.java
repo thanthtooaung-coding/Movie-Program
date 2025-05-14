@@ -3,7 +3,7 @@ package com.moving_system;
 import java.util.List;
 
 /**
- * Interface for movie data access operations (Repository Pattern)
+ * Interface for movie data access operations
  * Following Interface Segregation Principle
  */
 public interface IMovieDao {

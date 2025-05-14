@@ -6,15 +6,24 @@ import java.util.Scanner;
  * Main application class implementing the Movie Information System
  */
 public class Main {
+    private static Main instance;
+
     private static final String CSV_FILE_PATH = "data/movies.csv";
     private final Scanner scanner;
-    private final MovieServiceImpl movieServiceImpl;
+    private final IMovieDao movieDao;
+    private final IMovieValidator movieValidator;
 
     public Main() {
         this.scanner = new Scanner(System.in);
-        final IMovieDao movieDao = new CsvMovieDao(CSV_FILE_PATH);
-        final IMovieValidator movieValidator = new MovieValidator(movieDao);
-        this.movieServiceImpl = new MovieServiceImpl(movieDao, movieValidator);
+        this.movieDao = CsvMovieDao.getInstance(CSV_FILE_PATH);
+        this.movieValidator = MovieValidator.getInstance(movieDao);
+    }
+
+    public static Main getInstance() {
+        if (instance == null) {
+            instance = new Main();
+        }
+        return instance;
     }
 
     public void start() {
@@ -26,27 +35,16 @@ public class Main {
             String choice = scanner.nextLine();
 
             switch (choice) {
-                case "1":
-                    movieServiceImpl.addMovie();
-                    break;
-                case "2":
-                    movieServiceImpl.updateMovie();
-                    break;
-                case "3":
-                    movieServiceImpl.deleteMovie();
-                    break;
-                case "4":
-                    movieServiceImpl.generateReports();
-                    break;
-                case "5":
-                    movieServiceImpl.displayAllMovies();
-                    break;
-                case "6":
+                case "1" -> AddMovie.getInstance(movieDao, movieValidator).execute();
+                case "2" -> UpdateMovie.getInstance(movieDao, movieValidator).execute();
+                case "3" -> DeleteMovie.getInstance(movieDao).execute();
+                case "4" -> GenerateReports.getInstance(movieDao).execute();
+                case "5" -> DisplayAllMovies.getInstance(movieDao).execute();
+                case "6" -> {
                     System.out.println("Thank you for using the Movie Information System!");
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                    return;
+                }
+                default -> System.out.println("Invalid choice.");
             }
         }
     }
@@ -62,7 +60,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main app = new Main();
+        final Main app = Main.getInstance();
         app.start();
     }
 }

@@ -7,13 +7,23 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Validation implementation for movies
+ * Singleton implementation of IMovieValidator
  */
 public class MovieValidator implements IMovieValidator {
+    private static MovieValidator instance;
+
     private final IMovieDao movieDao;
 
     public MovieValidator(IMovieDao movieDao) {
         this.movieDao = movieDao;
+    }
+
+    // Singleton accessor
+    public static MovieValidator getInstance(IMovieDao movieDao) {
+        if (instance == null) {
+            instance = new MovieValidator(movieDao);
+        }
+        return instance;
     }
 
     @Override
